@@ -12,7 +12,7 @@ services:
       - ${YT_BACKUPS}:/opt/youtrack/backups:rw
     ports:
       # the mapped port must match ssh_port specified below.
-      - "${EXTERNAL_SSH_PORT}:8080"
+      - "80:8080"
     environment:
       VIRTUAL_HOST: ${DOMAINS}
       LETSENCRYPT_HOST: ${DOMAINS}
