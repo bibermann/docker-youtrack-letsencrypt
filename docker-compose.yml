@@ -1,6 +1,17 @@
 version: '3'
 
 services:
+  youtrack-nginx:
+    container_name: ${CONTAINER_YOUTRACK_NGINX_NAME}
+    image: 'nginx:alpine'
+    restart: unless-stopped
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    environment:
+      VIRTUAL_HOST: ${DOMAINS}
+      LETSENCRYPT_HOST: ${DOMAINS}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+
   youtrack:
     container_name: ${CONTAINER_YOUTRACK_NAME}
     image: 'jetbrains/youtrack:2018.3.47247'
@@ -10,13 +21,6 @@ services:
       - ${YT_CONF}:/opt/youtrack/conf:rw
       - ${YT_LOGS}:/opt/youtrack/logs:rw
       - ${YT_BACKUPS}:/opt/youtrack/backups:rw
-    ports:
-      # the mapped port must match ssh_port specified below.
-      - "80:8080"
-    environment:
-      VIRTUAL_HOST: ${DOMAINS}
-      LETSENCRYPT_HOST: ${DOMAINS}
-      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
 
 networks:
   default:
